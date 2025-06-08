@@ -8,8 +8,8 @@ Java bytecode assembler and class-gen utils
 * [X] Kotlin
 * [X] Scala
 
-| Language   | Assembler type       | Author     |
-|------------|----------------------|------------|
-| **Java**   | Receiver & ChainCall | B_312      |
-| **Kotlin** | Kotlin DSL Receiver  | B_312      |
-| **Scala**  | -                    | xiguajerry |
+| Language   | Assembler type         | Author     |
+|------------|------------------------|------------|
+| **Java**   | Receiver & ChainCall   | B_312      |
+| **Kotlin** | Kotlin DSL Receiver    | B_312      |
+| **Scala**  | Contextual Abstraction | xiguajerry |

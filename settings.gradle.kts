@@ -6,4 +6,4 @@ rootProject.name = "Genesis"
 // bytecode assembler
 include("genesis-java")
 include("genesis-kotlin")
-//include("genesis-scala")
+include("genesis-scala")

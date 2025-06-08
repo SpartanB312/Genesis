@@ -1,21 +1,13 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     java
-    kotlin("jvm") version "1.9.21"
+    kotlin("jvm") version libs.versions.kotlin
 }
-
-repositories {
-    mavenCentral()
-    maven("https://repo1.maven.org/maven2/")
-    maven("https://mvnrepository.com/artifact/")
-}
-
-val asmVersion = "9.7"
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.ow2.asm:asm:$asmVersion")
-    implementation("org.ow2.asm:asm-tree:$asmVersion")
-    implementation("org.ow2.asm:asm-commons:$asmVersion")
+    implementation(libs.bundles.asm)
 }
 
 tasks {
@@ -26,8 +18,8 @@ tasks {
     }
 
     compileKotlin {
-        kotlinOptions {
-            jvmTarget = "1.8"
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
         }
     }
 }
