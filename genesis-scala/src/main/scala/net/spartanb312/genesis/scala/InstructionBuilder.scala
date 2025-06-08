@@ -6,8 +6,6 @@ import org.objectweb.asm.tree.*
 import scala.collection.mutable
 import scala.compiletime.{error, summonAll, summonInline}
 
-import TypeName.given
-
 class LabelRecorder:
     private val map = mutable.Map[Any, Label]()
 
