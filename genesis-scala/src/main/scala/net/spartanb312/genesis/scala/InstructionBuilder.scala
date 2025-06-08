@@ -6,6 +6,8 @@ import org.objectweb.asm.tree.*
 import scala.collection.mutable
 import scala.compiletime.{error, summonAll, summonInline}
 
+import TypeName.given
+
 class LabelRecorder:
     private val map = mutable.Map[Any, Label]()
 
@@ -87,6 +89,7 @@ def instructions(builder: InstructionBuilder ?=> Unit): InsnList =
 inline def NOP(using InstructionBuilder): Unit = +InsnNode(Opcodes.NOP)
 
 inline def ACONST_NULL(using InstructionBuilder): Unit = +InsnNode(Opcodes.ACONST_NULL)
+
 inline def ICONST_M1(using InstructionBuilder): Unit = +InsnNode(Opcodes.ICONST_M1)
 inline def ICONST_0(using InstructionBuilder): Unit = +InsnNode(Opcodes.ICONST_0)
 inline def ICONST_1(using InstructionBuilder): Unit = +InsnNode(Opcodes.ICONST_1)
@@ -94,11 +97,14 @@ inline def ICONST_2(using InstructionBuilder): Unit = +InsnNode(Opcodes.ICONST_2
 inline def ICONST_3(using InstructionBuilder): Unit = +InsnNode(Opcodes.ICONST_3)
 inline def ICONST_4(using InstructionBuilder): Unit = +InsnNode(Opcodes.ICONST_4)
 inline def ICONST_5(using InstructionBuilder): Unit = +InsnNode(Opcodes.ICONST_5)
+
 inline def LCONST_0(using InstructionBuilder): Unit = +InsnNode(Opcodes.LCONST_0)
 inline def LCONST_1(using InstructionBuilder): Unit = +InsnNode(Opcodes.LCONST_1)
+
 inline def FCONST_0(using InstructionBuilder): Unit = +InsnNode(Opcodes.FCONST_0)
 inline def FCONST_1(using InstructionBuilder): Unit = +InsnNode(Opcodes.FCONST_1)
 inline def FCONST_2(using InstructionBuilder): Unit = +InsnNode(Opcodes.FCONST_2)
+
 inline def DCONST_0(using InstructionBuilder): Unit = +InsnNode(Opcodes.DCONST_0)
 inline def DCONST_1(using InstructionBuilder): Unit = +InsnNode(Opcodes.DCONST_1)
 
@@ -115,7 +121,33 @@ inline def LDC[V <: Any](value: V)(using InstructionBuilder): Unit =
         case _: Type => +LdcInsnNode(value)
         case _: Handle => +LdcInsnNode(value)
         case _: ConstantDynamic => +LdcInsnNode(value)
-        case _ => error("Unsupported type")
+        case _ => error("Unsupported type: " + typeName[V])
+
+inline def INT(value: Int)(using InstructionBuilder): Unit = inline value match
+    case -1 => ICONST_M1
+    case 0 => ICONST_0
+    case 1 => ICONST_1
+    case 2 => ICONST_2
+    case 3 => ICONST_3
+    case 4 => ICONST_4
+    case 5 => ICONST_5
+    case _ => LDC(value)
+
+inline def LONG(value: Long)(using InstructionBuilder): Unit = inline value match
+    case 0 => LCONST_0
+    case 1 => LCONST_1
+    case _ => LDC(value)
+
+inline def FLOAT(value: Float)(using InstructionBuilder): Unit = inline value match
+    case 0f => FCONST_0
+    case 1f => FCONST_1
+    case 2f => FCONST_2
+    case _ => LDC(value)
+
+inline def DOUBLE(value: Double)(using InstructionBuilder): Unit = inline value match
+    case 0.0 => DCONST_0
+    case 1.0 => DCONST_1
+    case _ => LDC(value)
 
 inline def ILOAD(index: Int)(using InstructionBuilder): Unit = +VarInsnNode(Opcodes.ILOAD, index)
 inline def LLOAD(index: Int)(using InstructionBuilder): Unit = +VarInsnNode(Opcodes.LLOAD, index)
@@ -316,7 +348,7 @@ given label2LabelNode: Conversion[Label, LabelNode] with
 
 given labelNode2Label: Conversion[LabelNode, Label] with
     override def apply(x: LabelNode): Label = x.getLabel
-            
+
 given string2LabelNode(using InstructionBuilder): Conversion[String, LabelNode] with
     override def apply(x: String): LabelNode = L(x)
 

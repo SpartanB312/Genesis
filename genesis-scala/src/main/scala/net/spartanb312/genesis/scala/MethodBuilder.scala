@@ -4,6 +4,7 @@ import org.objectweb.asm.tree.{ClassNode, InsnList, MethodNode}
 import org.objectweb.asm.{ClassWriter, Label, Opcodes}
 
 import java.io.{File, FileOutputStream, FileWriter}
+import java.util
 import scala.compiletime.error
 import scala.jdk.CollectionConverters.*
 
