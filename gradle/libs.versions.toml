@@ -1,7 +1,7 @@
 [versions]
-kotlin = "2.1.21"
+kotlin = "2.2.21"
 scala = "3.6.3"
-asm = "9.7.1"
+asm = "9.9"
 
 [libraries]
 scala3-library = { group = "org.scala-lang", name = "scala3-library_3", version.ref = "scala" }

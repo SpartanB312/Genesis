@@ -2,6 +2,12 @@ plugins {
     java
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}
+
 dependencies {
     implementation(libs.bundles.asm)
 }
@@ -9,7 +15,5 @@ dependencies {
 tasks {
     compileJava {
         options.encoding = "UTF-8"
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
     }
 }

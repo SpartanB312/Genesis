@@ -9,14 +9,14 @@ dependencies {
     implementation(libs.bundles.asm)
 }
 
-scala {
-    zincVersion = "1.10.8"
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
+scala {
+    zincVersion = "1.10.8"
 }
 
 tasks.compileScala {
